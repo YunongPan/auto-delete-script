@@ -4,7 +4,7 @@ setlocal enabledelayedexpansion
 REM Fetch the latest data from the remote
 git fetch -p
 
-REM REM Delete local branches that have been merged into main
+REM Delete local branches that have been merged into main
 for /f "tokens=*" %%i in ('git branch --merged ^| findstr /v /c:"*" ^| findstr /v /c:"main"') do (
    git branch -d %%i
 )
@@ -26,16 +26,17 @@ for /f "tokens=*" %%i in ('git branch -r --merged origin/main ^| findstr /v /c:"
     REM If the python script returns 1 (indicating the branch is old), delete it.
     if !errorlevel!==1 (
         echo Deleting branch: %%i
-        REM Delete the branch both locally and remotely. Uncomment the line below to actually perform the deletion.
-
+        
         REM Strip the 'origin/' prefix to get the actual branch name
         set branchName=%%i
         set branchName=!branchName:origin/=!
+
+        REM Delete the branch both locally and remotely. Uncomment the line below to actually perform the deletion.
         git push origin --delete !branchName!
     )
 )
 
-REM REM Empty the Recycle Bin
+REM Empty the Recycle Bin
 echo Emptying the Recycle Bin...
 powershell -command "Clear-RecycleBin -Confirm:$false"
 echo Recycle Bin emptied.

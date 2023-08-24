@@ -40,3 +40,5 @@ REM Empty the Recycle Bin
 echo Emptying the Recycle Bin...
 powershell -command "Clear-RecycleBin -Confirm:$false"
 echo Recycle Bin emptied.
+
+timeout /t 10

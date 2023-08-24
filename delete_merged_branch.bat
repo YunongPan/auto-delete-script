@@ -1,6 +1,20 @@
 @echo off
 setlocal enabledelayedexpansion
 
+REM Get the current date and time in YYYY-MM-DD_HH-MM-SS format
+for /f "delims=" %%a in ('wmic OS Get localdatetime ^| find "."') do set datetime=%%a
+set datetimeformatted=%datetime:~0,4%-%datetime:~4,2%-%datetime:~6,2%_%datetime:~8,2%-%datetime:~10,2%-%datetime:~12,2%
+
+REM Set log file path to Desktop with current date-time in filename
+set LOGFILE=%userprofile%\Desktop\delete_merged_branch_log_%datetimeformatted%.txt
+
+REM Redirect all output (stdout and stderr) to the log file
+if "%~1"=="_logging_" goto :logging
+call "%~f0" _logging_ > "%LOGFILE%" 2>&1
+exit /b
+
+:logging
+
 REM Fetch the latest data from the remote
 git fetch -p
 
@@ -36,9 +50,6 @@ for /f "tokens=*" %%i in ('git branch -r --merged origin/main ^| findstr /v /c:"
     )
 )
 
-REM Empty the Recycle Bin
-echo Emptying the Recycle Bin...
-powershell -command "Clear-RecycleBin -Confirm:$false"
-echo Recycle Bin emptied.
+echo All merged branches older than 3 months have been deleted.
 
-timeout /t 10
+

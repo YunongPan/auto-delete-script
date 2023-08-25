@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "MAIN_BRANCH=main"
+set "MAIN_BRANCH=master"
 
 call init_logging_time.bat
 

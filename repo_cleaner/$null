@@ -1,0 +1,7 @@
+Clear-RecycleBin : Das System kann die angegebene Datei nicht finden
+In Zeile:1 Zeichen:1
++ Clear-RecycleBin -Confirm:$false
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (RecycleBin:String) [Clear-RecycleBin], Win32Exception
+    + FullyQualifiedErrorId : FailedToClearRecycleBin,Microsoft.PowerShell.Commands.ClearRecycleBinCommand
+ 

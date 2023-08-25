@@ -1,20 +1,22 @@
 @echo off
 setlocal enabledelayedexpansion
 
+set "MAIN_BRANCH=master"
+
 call init_logging_time.bat
 
 REM Fetch the latest data from the remote
 echo Fetching the latest data from the remote... >> "%LOGFILE%"
 git fetch -p >> "%LOGFILE%" 2>>&1
 
-REM Delete local branches that have been merged into main
-echo Deleting local branches merged into main... >> "%LOGFILE%"
-for /f "tokens=*" %%i in ('git branch --merged ^| findstr /v /c:"*" ^| findstr /v /c:"main"') do (
+REM Delete local branches that have been merged into master branch
+echo Deleting local branches merged into %MAIN_BRANCH%... >> "%LOGFILE%"
+for /f "tokens=*" %%i in ('git branch --merged ^| findstr /v /c:"*" ^| findstr /v /c:"%MAIN_BRANCH%"') do (
    git branch -d %%i >> "%LOGFILE%" 2>>&1
 )
 
-REM For each remote branch that's been merged into main, check its last commit date
-for /f "tokens=*" %%i in ('git branch -r --merged origin/main ^| findstr /v /c:"main" ^| findstr /c:"origin/"') do (
+REM For each remote branch that's been merged into master branch, check its last commit date
+for /f "tokens=*" %%i in ('git branch -r --merged origin/%MAIN_BRANCH% ^| findstr /v /c:"%MAIN_BRANCH%" ^| findstr /c:"origin/"') do (
 
     REM Get the commit date for the branch
     Set "cmd=git show -s --format=%%ci refs/remotes/%%i"
